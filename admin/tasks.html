@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Tasks - QuickHire</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</head>
+<body>
+  <nav>
+    <div><b>QuickHire Admin</b></div>
+    <ul>
+      <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="two-col">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="users.html">Manage Users</a></li>
+        <li><a href="tasks.html">Manage Tasks</a></li>
+        <li><a href="reports.html">Reports</a></li>
+      </ul>
+    </div>
+
+    <div class="main-area">
+      <h2>Manage Tasks</h2>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tasks-list">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadAdminTasks);
+  </script>
+</body>
+</html>

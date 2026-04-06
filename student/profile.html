@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile - QuickHire</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/student.js"></script>
+</head>
+<body>
+  <nav>
+    <div><b>QuickHire</b></div>
+    <ul>
+      <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="two-col">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="browse.html">Browse Tasks</a></li>
+        <li><a href="applications.html">My Applications</a></li>
+        <li><a href="certificates.html">My Certificates</a></li>
+        <li><a href="earnings.html">My Earnings</a></li>
+        <li><a href="profile.html">My Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="main-area">
+      <h2>My Profile</h2>
+      
+      <div class="card" style="margin-bottom: 24px;">
+        <p><b>Name:</b> <span id="profile-name"></span></p>
+        <p><b>University:</b> <span id="profile-university"></span></p>
+        <p><b>Student ID:</b> <span id="profile-student-id"></span></p>
+        <p><b>Email:</b> <span id="profile-email"></span></p>
+        <p><b>Skills:</b> <span id="profile-skills"></span></p>
+      </div>
+      
+      <h3>Update Profile</h3>
+      <form onsubmit="event.preventDefault(); updateProfile({
+        fullName: this.fullName.value,
+        university: this.university.value,
+        skills: this.skills.value
+      });">
+        <label>Full Name</label>
+        <input type="text" name="fullName" id="edit-name">
+        
+        <label>University</label>
+        <input type="text" name="university" id="edit-university">
+        
+        <label>Skills</label>
+        <input type="text" name="skills" id="edit-skills">
+        
+        <input type="submit" value="Save Changes">
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadStudentProfile);
+  </script>
+</body>
+</html>

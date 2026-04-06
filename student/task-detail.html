@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Task Details - QuickHire</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/student.js"></script>
+</head>
+<body>
+  <nav>
+    <div><b>QuickHire</b></div>
+    <ul>
+      <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="two-col">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="browse.html">Browse Tasks</a></li>
+        <li><a href="applications.html">My Applications</a></li>
+        <li><a href="certificates.html">My Certificates</a></li>
+        <li><a href="earnings.html">My Earnings</a></li>
+        <li><a href="profile.html">My Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="main-area">
+      <h2 id="task-title">Task Title</h2>
+      
+      <div class="two-col">
+        <div style="flex: 2; padding-right: 24px;">
+          <h3>Description</h3>
+          <p id="task-description"></p>
+          
+          <h3>Required Skills</h3>
+          <p id="task-skills"></p>
+          
+          <h3>Deliverables</h3>
+          <p id="task-deliverables"></p>
+          
+          <p><b>Payment:</b> <span id="task-payment"></span> BDT</p>
+          <p><b>Deadline:</b> <span id="task-deadline"></span></p>
+        </div>
+        
+        <div style="flex: 1;">
+          <h3>Company</h3>
+          <p id="company-name"></p>
+          
+          <h3>Apply for this Task</h3>
+          <form onsubmit="event.preventDefault(); submitApplication(this.coverNote.value);">
+            <label>Cover Note</label>
+            <textarea name="coverNote" rows="5" placeholder="Why should you be selected for this task?" required></textarea>
+            <input type="submit" value="Submit Application">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadTaskDetail);
+  </script>
+</body>
+</html>

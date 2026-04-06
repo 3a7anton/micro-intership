@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Review Applications - QuickHire</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/company.js"></script>
+</head>
+<body>
+  <nav>
+    <div><b>QuickHire</b></div>
+    <ul>
+      <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="two-col">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="post-task.html">Post a Task</a></li>
+        <li><a href="my-tasks.html">My Tasks</a></li>
+        <li><a href="review-applications.html">Review Applications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="main-area">
+      <h2>Review Applications</h2>
+      
+      <p><b>Task:</b> <span id="task-title">Select a task</span></p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>University</th>
+            <th>Skills</th>
+            <th>Applied Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="applications-list">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadReviewApplications);
+  </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Company Profile - QuickHire</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/company.js"></script>
+</head>
+<body>
+  <nav>
+    <div><b>QuickHire</b></div>
+    <ul>
+      <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="two-col">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="post-task.html">Post a Task</a></li>
+        <li><a href="my-tasks.html">My Tasks</a></li>
+        <li><a href="review-applications.html">Review Applications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="main-area">
+      <h2>Company Profile</h2>
+      
+      <div class="card" style="margin-bottom: 24px;">
+        <p><b>Company Name:</b> <span id="profile-company-name"></span></p>
+        <p><b>Industry:</b> <span id="profile-industry"></span></p>
+        <p><b>Email:</b> <span id="profile-email"></span></p>
+        <p><b>Contact Number:</b> <span id="profile-contact"></span></p>
+        <p><b>Description:</b> <span id="profile-description"></span></p>
+      </div>
+      
+      <h3>Update Profile</h3>
+      <form onsubmit="event.preventDefault(); updateCompanyProfile({
+        companyName: this.companyName.value,
+        industry: this.industry.value,
+        contactNo: this.contactNo.value,
+        description: this.description.value
+      });">
+        <label>Company Name</label>
+        <input type="text" name="companyName" id="edit-company-name">
+        
+        <label>Industry</label>
+        <input type="text" name="industry" id="edit-industry">
+        
+        <label>Contact Number</label>
+        <input type="text" name="contactNo" id="edit-contact">
+        
+        <label>Description</label>
+        <textarea name="description" id="edit-description" rows="4"></textarea>
+        
+        <input type="submit" value="Save Changes">
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadCompanyProfile);
+  </script>
+</body>
+</html>

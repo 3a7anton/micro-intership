@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Earnings - QuickHire</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/student.js"></script>
+</head>
+<body>
+  <nav>
+    <div><b>QuickHire</b></div>
+    <ul>
+      <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="two-col">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="browse.html">Browse Tasks</a></li>
+        <li><a href="applications.html">My Applications</a></li>
+        <li><a href="certificates.html">My Certificates</a></li>
+        <li><a href="earnings.html">My Earnings</a></li>
+        <li><a href="profile.html">My Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="main-area">
+      <h2>My Earnings</h2>
+      
+      <div class="stat-box" style="margin-bottom: 24px;">
+        <h3 id="total-earnings">0 BDT</h3>
+        <p>Total Earned</p>
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Company</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="earnings-list">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadEarnings);
+  </script>
+</body>
+</html>

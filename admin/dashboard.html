@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - QuickHire</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</head>
+<body>
+  <nav>
+    <div><b>QuickHire Admin</b></div>
+    <ul>
+      <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="two-col">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="users.html">Manage Users</a></li>
+        <li><a href="tasks.html">Manage Tasks</a></li>
+        <li><a href="reports.html">Reports</a></li>
+      </ul>
+    </div>
+
+    <div class="main-area">
+      <h2>Admin Dashboard</h2>
+      <p>Platform Overview</p>
+      
+      <div class="stats-row">
+        <div class="stat-box">
+          <h3 id="total-users">0</h3>
+          <p>Total Users</p>
+        </div>
+        <div class="stat-box">
+          <h3 id="total-students">0</h3>
+          <p>Total Students</p>
+        </div>
+        <div class="stat-box">
+          <h3 id="total-companies">0</h3>
+          <p>Total Companies</p>
+        </div>
+        <div class="stat-box">
+          <h3 id="total-tasks">0</h3>
+          <p>Total Tasks</p>
+        </div>
+        <div class="stat-box">
+          <h3 id="total-certificates">0</h3>
+          <p>Total Certificates</p>
+        </div>
+      </div>
+
+      <h3>Recent Activity</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="recent-activity">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadAdminDashboard);
+  </script>
+</body>
+</html>
