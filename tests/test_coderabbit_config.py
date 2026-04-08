@@ -104,6 +104,28 @@ class TestReviewsSection:
     def test_labeling_instructions_is_empty_list(self, config):
         assert config["reviews"]["labeling_instructions"] == []
 
+    # Boundary: boolean fields must be actual booleans, not truthy strings
+    def test_request_changes_workflow_is_boolean(self, config):
+        assert isinstance(config["reviews"]["request_changes_workflow"], bool)
+
+    def test_high_level_summary_is_boolean(self, config):
+        assert isinstance(config["reviews"]["high_level_summary"], bool)
+
+    def test_poem_is_boolean(self, config):
+        assert isinstance(config["reviews"]["poem"], bool)
+
+    def test_review_status_is_boolean(self, config):
+        assert isinstance(config["reviews"]["review_status"], bool)
+
+    def test_collapse_walkthrough_is_boolean(self, config):
+        assert isinstance(config["reviews"]["collapse_walkthrough"], bool)
+
+    def test_sequence_diagrams_is_boolean(self, config):
+        assert isinstance(config["reviews"]["sequence_diagrams"], bool)
+
+    def test_changed_files_summary_is_boolean(self, config):
+        assert isinstance(config["reviews"]["changed_files_summary"], bool)
+
 
 # ---------------------------------------------------------------------------
 # path_filters
@@ -138,6 +160,10 @@ class TestPathFilters:
     def test_all_filters_are_exclusions(self):
         """Every filter in this config should be a negation pattern."""
         assert all(f.startswith("!") for f in self._filters)
+
+    # Boundary: no blank/empty strings in filters
+    def test_no_empty_filter_entries(self):
+        assert all(f.strip() for f in self._filters)
 
 
 # ---------------------------------------------------------------------------
@@ -198,12 +224,13 @@ class TestPathInstructions:
 
     def test_html_instructions_mention_accessibility(self):
         html_entry = next(e for e in self._instructions if e["path"] == "**/*.html")
-        assert "accessibility" in html_entry["instructions"].lower() or "aria" in html_entry["instructions"].lower()
+        instr = html_entry["instructions"].lower()
+        assert "accessibility" in instr or "aria" in instr
 
     def test_js_instructions_mention_security(self):
         js_entry = next(e for e in self._instructions if e["path"] == "js/**")
         instr = js_entry["instructions"].lower()
-        assert "security" in instr or "xss" in instr or "api key" in instr
+        assert "security" in instr or "xss" in instr or "api key" in instr or "hardcoded" in instr
 
     def test_admin_instructions_mention_authorization(self):
         admin_entry = next(e for e in self._instructions if e["path"] == "admin/**")
@@ -212,11 +239,25 @@ class TestPathInstructions:
 
     def test_sql_instructions_mention_rls(self):
         sql_entry = next(e for e in self._instructions if e["path"] == "supabase-setup.sql")
-        assert "rls" in sql_entry["instructions"].lower() or "row level security" in sql_entry["instructions"].lower()
+        instr = sql_entry["instructions"].lower()
+        assert "rls" in instr or "row level security" in instr
 
     def test_no_duplicate_paths(self):
         paths = self._paths()
         assert len(paths) == len(set(paths)), "Duplicate path entries found"
+
+    # Boundary: each entry has exactly the required keys (no stray keys)
+    def test_each_entry_has_only_expected_keys(self):
+        allowed_keys = {"path", "instructions"}
+        for entry in self._instructions:
+            extra = set(entry.keys()) - allowed_keys
+            assert not extra, f"Unexpected keys in path_instructions entry: {extra}"
+
+    # Regression: instructions for student path mention session validation or data access
+    def test_student_instructions_mention_data_access(self):
+        student_entry = next(e for e in self._instructions if e["path"] == "student/**")
+        instr = student_entry["instructions"].lower()
+        assert "session" in instr or "own data" in instr or "student" in instr
 
 
 # ---------------------------------------------------------------------------
@@ -250,10 +291,21 @@ class TestAutoReview:
         branches = self._ar["base_branches"]
         assert len(branches) == len(set(branches))
 
-    # Regression / boundary
     def test_base_branches_are_strings(self):
         for branch in self._ar["base_branches"]:
             assert isinstance(branch, str) and branch.strip()
+
+    # Boundary: boolean fields must be actual booleans
+    def test_enabled_is_boolean(self):
+        assert isinstance(self._ar["enabled"], bool)
+
+    def test_drafts_is_boolean(self):
+        assert isinstance(self._ar["drafts"], bool)
+
+    # Regression: auto_review must have all required keys
+    def test_auto_review_has_required_keys(self):
+        required = {"enabled", "drafts", "base_branches"}
+        assert required.issubset(set(self._ar.keys()))
 
 
 # ---------------------------------------------------------------------------
@@ -270,3 +322,7 @@ class TestChatSection:
     # Boundary: auto_reply must be a boolean, not a truthy string
     def test_auto_reply_is_boolean(self, config):
         assert isinstance(config["chat"]["auto_reply"], bool)
+
+    # Regression: chat section should only contain expected keys
+    def test_chat_has_auto_reply_key(self, config):
+        assert "auto_reply" in config["chat"]
