@@ -1,0 +1,58 @@
+# CodeRabbit Configuration
+# Docs: https://coderabbit.ai/docs/configuration/reference
+
+language: "en-US"
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  auto_title_placeholder: "@coderabbitai"
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  sequence_diagrams: true
+  changed_files_summary: true
+  labeling_instructions: []
+
+  path_filters:
+    - "!**/*.min.js"
+    - "!**/*.min.css"
+    - "!**/node_modules/**"
+    - "!**/.git/**"
+
+  path_instructions:
+    - path: "**/*.html"
+      instructions: |
+        Review for semantic HTML5 structure, accessibility (ARIA roles, alt attributes),
+        proper use of meta tags, and consistent linking of CSS/JS files.
+    - path: "css/**"
+      instructions: |
+        Review for consistent naming conventions, CSS variable usage, responsiveness,
+        and any redundant or conflicting rules.
+    - path: "js/**"
+      instructions: |
+        Review for proper error handling, async/await usage, Supabase client initialization,
+        security (no hardcoded API keys), and XSS prevention.
+    - path: "admin/**"
+      instructions: |
+        Pay close attention to authorization checks — ensure only admin users can access
+        these pages/functions. Review all Supabase RLS policy interactions.
+    - path: "student/**"
+      instructions: |
+        Ensure proper session validation and that students can only access their own data.
+    - path: "supabase-setup.sql"
+      instructions: |
+        Review SQL for proper RLS (Row Level Security) policies, index usage,
+        correct foreign key constraints, and potential SQL injection vectors.
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "main"
+      - "master"
+
+chat:
+  auto_reply: true

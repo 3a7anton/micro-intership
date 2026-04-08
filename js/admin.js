@@ -1,39 +1,52 @@
-// Admin page logic
+
 
 async function loadAdminDashboard() {
   await checkAuth();
   
-  // Fetch total users by role
-  const { data: users } = await supabaseClient
+  
+  const { data: users, error: usersError } = await supabaseClient
     .from('users')
     .select('role');
-  
+  if (usersError) {
+    console.error('Failed to load users:', usersError.message);
+    return;
+  }
+
   const totalUsers = users ? users.length : 0;
   const totalStudents = users ? users.filter(u => u.role === 'student').length : 0;
   const totalCompanies = users ? users.filter(u => u.role === 'company').length : 0;
-  
-  // Fetch total tasks
-  const { data: tasksCount } = await supabaseClient
+
+
+  const { data: tasksCount, error: tasksCountError } = await supabaseClient
     .from('tasks')
     .select('id', { count: 'exact' });
-  
-  // Fetch total certificates
-  const { data: certCount } = await supabaseClient
+  if (tasksCountError) {
+    console.error('Failed to load tasks count:', tasksCountError.message);
+  }
+
+
+  const { data: certCount, error: certCountError } = await supabaseClient
     .from('certificates')
     .select('id', { count: 'exact' });
-  
+  if (certCountError) {
+    console.error('Failed to load certificates count:', certCountError.message);
+  }
+
   document.getElementById('total-users').textContent = totalUsers;
   document.getElementById('total-students').textContent = totalStudents;
   document.getElementById('total-companies').textContent = totalCompanies;
   document.getElementById('total-tasks').textContent = tasksCount?.length || 0;
   document.getElementById('total-certificates').textContent = certCount?.length || 0;
-  
-  // Recent activity - show latest tasks
-  const { data: recentTasks } = await supabaseClient
+
+
+  const { data: recentTasks, error: recentTasksError } = await supabaseClient
     .from('tasks')
     .select('title, posted_at')
     .order('posted_at', { ascending: false })
     .limit(5);
+  if (recentTasksError) {
+    console.error('Failed to load recent tasks:', recentTasksError.message);
+  }
   
   const tbody = document.getElementById('recent-activity');
   if (recentTasks && recentTasks.length > 0) {
@@ -97,7 +110,7 @@ async function approveUser(userId) {
 async function removeUser(userId) {
   if (!confirm('Are you sure you want to remove this user?')) return;
   
-  // Note: This requires admin privileges in Supabase
+  
   const { error } = await supabaseClient
       .from('users')
       .delete()
@@ -155,12 +168,21 @@ async function deleteTask(taskId) {
 async function loadReports() {
   await checkAuth();
   
-  // Overview stats
-  const { data: users } = await supabaseClient.from('users').select('role');
-  const { data: tasks } = await supabaseClient.from('tasks').select('status');
-  const { data: apps } = await supabaseClient.from('applications').select('status');
-  const { data: certs } = await supabaseClient.from('certificates').select('id');
-  const { data: payments } = await supabaseClient.from('payments').select('amount, status');
+  
+  const { data: users, error: rUsersError } = await supabaseClient.from('users').select('role');
+  if (rUsersError) console.error('Reports: failed to load users:', rUsersError.message);
+
+  const { data: tasks, error: rTasksError } = await supabaseClient.from('tasks').select('status');
+  if (rTasksError) console.error('Reports: failed to load tasks:', rTasksError.message);
+
+  const { data: apps, error: rAppsError } = await supabaseClient.from('applications').select('status');
+  if (rAppsError) console.error('Reports: failed to load applications:', rAppsError.message);
+
+  const { data: certs, error: rCertsError } = await supabaseClient.from('certificates').select('id');
+  if (rCertsError) console.error('Reports: failed to load certificates:', rCertsError.message);
+
+  const { data: payments, error: rPaymentsError } = await supabaseClient.from('payments').select('amount, status');
+  if (rPaymentsError) console.error('Reports: failed to load payments:', rPaymentsError.message);
   
   const totalUsers = users?.length || 0;
   const students = users?.filter(u => u.role === 'student').length || 0;
@@ -180,7 +202,7 @@ async function loadReports() {
     <tr><td>Total Payments (BDT)</td><td>${totalPayments}</td></tr>
   `;
   
-  // Tasks by status
+  
   const taskStatusCounts = {};
   tasks?.forEach(t => { taskStatusCounts[t.status] = (taskStatusCounts[t.status] || 0) + 1; });
   
@@ -188,7 +210,7 @@ async function loadReports() {
     .map(([status, count]) => `<tr><td>${status}</td><td>${count}</td></tr>`)
     .join('') || '<tr><td colspan="2">No data</td></tr>';
   
-  // Applications by status
+  
   const appStatusCounts = {};
   apps?.forEach(a => { appStatusCounts[a.status] = (appStatusCounts[a.status] || 0) + 1; });
   
