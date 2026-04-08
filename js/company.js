@@ -1,9 +1,9 @@
-// Company page logic
+
 
 async function loadCompanyDashboard() {
   const user = await checkAuth();
   
-  // Fetch company profile
+  
   const { data: profile, error } = await supabaseClient
     .from('users')
     .select('*')
@@ -14,7 +14,7 @@ async function loadCompanyDashboard() {
     document.getElementById('welcome-msg').textContent = `Welcome, ${profile.company_name}`;
   }
   
-  // Fetch stats
+  
   const { data: tasks } = await supabaseClient
     .from('tasks')
     .select('id, status')
@@ -24,7 +24,7 @@ async function loadCompanyDashboard() {
   const inProgress = tasks ? tasks.filter(t => t.status === 'in_progress').length : 0;
   const completed = tasks ? tasks.filter(t => t.status === 'completed').length : 0;
   
-  // Get total applications for this company's tasks
+  
   const { data: applications } = await supabaseClient
     .from('applications')
     .select('id', { count: 'exact' })
@@ -35,7 +35,7 @@ async function loadCompanyDashboard() {
   document.getElementById('in-progress').textContent = inProgress;
   document.getElementById('completed').textContent = completed;
   
-  // Fetch recent tasks
+  
   const { data: recentTasks } = await supabaseClient
     .from('tasks')
     .select('*')
@@ -116,7 +116,7 @@ async function loadReviewApplications() {
   currentReviewTaskId = urlParams.get('task_id');
   
   if (!currentReviewTaskId) {
-    // Load tasks dropdown or show all applications
+    
     const { data: tasks } = await supabaseClient
       .from('tasks')
       .select('id, title')
@@ -220,7 +220,7 @@ async function loadCompanyProfile() {
     document.getElementById('profile-contact').textContent = profile.contact_no;
     document.getElementById('profile-description').textContent = profile.description;
     
-    // Populate edit form
+    
     document.getElementById('edit-company-name').value = profile.company_name;
     document.getElementById('edit-industry').value = profile.industry;
     document.getElementById('edit-contact').value = profile.contact_no;

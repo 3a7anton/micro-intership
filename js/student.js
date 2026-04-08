@@ -1,9 +1,9 @@
-// Student page logic
+
 
 async function loadStudentDashboard() {
   const user = await checkAuth();
   
-  // Fetch user profile
+  
   const { data: profile, error } = await supabaseClient
     .from('users')
     .select('*')
@@ -14,7 +14,7 @@ async function loadStudentDashboard() {
     document.getElementById('welcome-msg').textContent = `Welcome, ${profile.full_name}`;
   }
   
-  // Fetch applications count
+  
   const { data: applications } = await supabaseClient
     .from('applications')
     .select('status')
@@ -31,7 +31,7 @@ async function loadStudentDashboard() {
   document.getElementById('in-progress').textContent = inProgress;
   document.getElementById('completed').textContent = completed;
   
-  // Fetch total earnings
+  
   const { data: payments } = await supabaseClient
     .from('payments')
     .select('amount')
@@ -41,7 +41,7 @@ async function loadStudentDashboard() {
   const totalEarned = payments ? payments.reduce((sum, p) => sum + p.amount, 0) : 0;
   document.getElementById('total-earned').textContent = totalEarned + ' BDT';
   
-  // Fetch recent applications
+  
   const { data: recentApps } = await supabaseClient
     .from('applications')
     .select('*, tasks(title, company:users(full_name)), applied_at, status')
@@ -212,7 +212,7 @@ async function loadSubmitWorkPage() {
     return;
   }
   
-  // Store app ID for submission
+  
   window.currentApplicationId = appId;
   
   const { data: app, error } = await supabaseClient
@@ -240,7 +240,7 @@ async function submitWork(file) {
     return;
   }
   
-  // Upload file to Supabase Storage
+  
   const fileName = `${user.id}_${Date.now()}_${file.name}`;
   const { data: uploadData, error: uploadError } = await supabaseClient.storage
     .from('submissions')
@@ -251,12 +251,12 @@ async function submitWork(file) {
     return;
   }
   
-  // Get public URL
+  
   const { data: { publicUrl } } = supabaseClient.storage
     .from('submissions')
     .getPublicUrl(fileName);
   
-  // Insert submission record
+  
   const { error } = await supabaseClient.from('submissions').insert({
     application_id: window.currentApplicationId,
     file_url: publicUrl
@@ -340,7 +340,7 @@ async function loadStudentProfile() {
     document.getElementById('profile-email').textContent = profile.email;
     document.getElementById('profile-skills').textContent = profile.skills;
     
-    // Populate edit form
+    
     document.getElementById('edit-name').value = profile.full_name;
     document.getElementById('edit-university').value = profile.university;
     document.getElementById('edit-skills').value = profile.skills;
